@@ -100,13 +100,26 @@ const input=`0
 144`;
 let inputArraySorted=input.split('\n').map(i=>Number(i)).sort((a,b)=>a-b);
 	
+const resultPartTwo=outer (0,inputArraySorted.slice(1));
+function outer (start, a){
+	if(a.length===0){
+		return 1;
 
-const resultPartOne=inputArraySorted.reduce((acc,val,index,array)=> {
-	if(array[index-1]-val===-1 ) return [acc[0]+1,acc[1]];
-	else if(array[index-1]-val===-3 ) return [acc[0],acc[1]+1];
-	else{
-		return [0,0];
 	}
 
-},[0,0])
-console.log(resultPartOne[0]*(resultPartOne[1]+1));
+	return loop(0,0);
+
+	function loop(index,acc){
+		if((a[index]-start)>=4||!a[index]){
+			return acc;
+		}
+		else if((a[index]-start)<4){
+			acc=acc+outer(a[index],a.slice(index+1));
+		}
+		 return loop(index+1,acc);
+	}
+
+
+}
+
+console.log(resultPartTwo);

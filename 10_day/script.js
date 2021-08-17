@@ -98,15 +98,14 @@ const input=`0
 119
 71
 144`;
-let inputArraySorted=input.split('\n').map(i=>Number(i)).sort((a,b)=>a-b);
+let inputArraySorted=input.split('\n').map(v=>Number(v)).sort((a,b)=>b-a);
 	
+const resultPartTwo = inputArraySorted.reduce(function(acc,value,index,array) { 
+	array.slice(index+1,array.findIndex(v => value - v > 3 )===-1 ? array.length:array.findIndex(v => value - v > 3 )).forEach(v => {
+		acc.has(v)?acc.set(v,acc.get(v)+acc.get(value)):acc.set(v,acc.get(value));
+	})
+		return acc;
+} , new Map([[inputArraySorted[0],1]]));
 
-const resultPartOne=inputArraySorted.reduce((acc,val,index,array)=> {
-	if(array[index-1]-val===-1 ) return [acc[0]+1,acc[1]];
-	else if(array[index-1]-val===-3 ) return [acc[0],acc[1]+1];
-	else{
-		return [0,0];
-	}
+console.log(resultPartTwo);
 
-},[0,0])
-console.log(resultPartOne[0]*(resultPartOne[1]+1));

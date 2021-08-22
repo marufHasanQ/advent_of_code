@@ -1,2 +1,0 @@
-text from day 9
-this is new line

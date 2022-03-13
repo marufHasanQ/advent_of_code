@@ -9,13 +9,9 @@
         randomNumbers = randomNumbers.split(",").map( v => Number(v));
 
         boards = transformTo2DArray(boards); 
-        const firstBoard = (getBoard(randomNumbers))(boards);
+        const firstBoard = part2(randomNumbers)(boards);
         return firstBoard;
 
-
-        //console.log(firstBoard);
-        //console.log(boards);
-        //console.log(randomNumbers, boards);
     }
 
 function transformTo2DArray(gameBoards) {
@@ -51,10 +47,29 @@ function getBoard(randomNumbers) {
     }
 }
 
+function part2(randomNumbers) {
+    return boards =>{
+        return randomNumbers.slice().reduce(([boards,stack],value,index,array) => {
+                boards= markboards(boards)(value);
+                const solvedBoards = checkBoards(boards);
+                const isSolved = ((solvedBoard) => {
+                        return solvedBoards.length ? true : false;
+                        })(solvedBoards);
+
+                if (isSolved) {
+                stack = scoreCalculator(value)(solvedBoards.at(-1));
+                boards = deleteIteams(boards)(solvedBoards);
+                }
+
+                return [boards,stack];
+                },[boards,0]);
+    }
+}
 function checkBoards(boards) {
-    return boards.find((value,index,array) => {
-            return checkOneboard(value);
-            }); 
+    return boards.reduce((solvedBoards,value,index,array) => {
+            if( checkOneboard(value)) solvedBoards.push(value);
+            return solvedBoards;
+            },[]); 
     function checkOneboard(board) {
         //check horizontaly on every row of the board to see if it is solved
         let isSolvedHorizontal = board.some(value => value.every(value => value === -100));
@@ -89,9 +104,11 @@ function scoreCalculator (value){
         const sum = boards.reduce((acc,v) => acc + v.reduce((acc,v) => acc+(v === -100? 0: v),0),0)
             return sum * value;
 
-
     }
-
-
 }
-
+function deleteIteams(boards){
+    return iteams =>{
+        iteams.forEach(iteam => boards.splice(boards.findIndex(board => board === iteam),1));
+        return boards;
+    }
+}

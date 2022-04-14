@@ -1,22 +1,21 @@
 
-
-    fetch('./input.txt')
-.then(res => res.text())
+fetch('./input.txt')
+    .then(res => res.text())
     .then(data => console.log(   main(
-                    transformInput(data.trim())
-                    )));
+        transformInput(data.trim())
+    )));
 
-    function transformInput(data) {
-        return data
-            .split("\n")
-            .map(v => v.split(""));
-    } 
+function transformInput(data) {
+    return data
+        .split("\n")
+        .map(v => v.split(""));
+} 
 
 const errorArray =  '(),[],{},<>'.split(',').map( v => v.split(''));
 const errorScore= new Map([[')',3],
-        [']',57],
-        ['}',1197],
-        ['>',25137]
+    [']',57],
+    ['}',1197],
+    ['>',25137]
 
 ]);
 
@@ -25,6 +24,7 @@ let exposedData;
 
 function main(data){
     exposedData = data;
+    const getScoreOfLine = getTotalLineScore(errorArray);
     console.log('inside main');
 
     console.log('rec',data.reduce((acc,v) => acc + rec(v)(0)([]),0));

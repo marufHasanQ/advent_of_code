@@ -17,9 +17,14 @@ function main(data){
     //    console.log(data);
     console.log (
 
-            new Array(100).fill(0).reduce((acc,v) =>{
-                return steps(acc),[data,0]
-                } )
+            new Array(1000).fill(0).reduce((acc,v,i,array) =>{
+                if(acc[1] === data.length*data[0].length){
+                array.splice(0);
+                return i;
+                }
+
+                return steps(acc)
+                } ,[data,0])
             )
         //return data;
 }
@@ -47,13 +52,12 @@ function surroundingOf2dArray(array) {
 }
 
 function steps(acc) {
-    let count = acc[1];
     acc = acc[0];
     const beforeZeroed = surroundingOf2dArray(acc)([0,0])([acc.length -1 ,acc[0].length -1])(incrementByOne)(acc);
 
     const afterZeroed = surroundingOf2dArray(beforeZeroed)([0,0])([beforeZeroed.length -1 ,beforeZeroed[0].length -1])(zeroing)(beforeZeroed);
 
-    count = count + surroundingOf2dArray(afterZeroed)([0,0])([afterZeroed.length -1 ,afterZeroed[0].length -1])(countZeros)(0);
+    let count = surroundingOf2dArray(afterZeroed)([0,0])([afterZeroed.length -1 ,afterZeroed[0].length -1])(countZeros)(0);
     return [afterZeroed, count];
 }
 
